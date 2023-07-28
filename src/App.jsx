@@ -4,90 +4,90 @@ import ContohButton from './components/ContohButton'
 import Card from './components/Card'
 import Modal from './components/Modal'
 
-const komponenKecil = () => {
-	return <p>ini komponen kecil</p>
-}
-
-const initialState = [
-	{
-		name: 'HTML & CSS',
-		image:
-			'https://s3-ap-northeast-1.amazonaws.com/progate/shared/images/lesson/react/html.svg',
-		introduction:
-			'HTML dan CSS digunakan untuk menentukan bagaimana sebuah website ddisusun dan didesign. Ayo pelajari bahasa ini dan langsung membuat halaman situs web!',
-	},
-	{
-		name: 'Sass',
-		image:
-			'https://s3-ap-northeast-1.amazonaws.com/progate/shared/images/lesson/react/sass.svg',
-		introduction:
-			'Sass adalah sebuah bahasa untuk membuat code CSS lebih gampang dan efisient.',
-	},
-	{
-		name: 'JavaScript',
-		image:
-			'https://s3-ap-northeast-1.amazonaws.com/progate/shared/images/lesson/react/es6.svg',
-		introduction:
-			'JavaScript aadalah bahasa populer yang dapat digunakan untuk membuat website interaktif dan server backend.',
-	},
-]
-
 function App() {
+	const [isSubmitted, setIsSubmitted] = useState(false)
+	const [errorEmail, setErrorEmail] = useState(false)
+	const [form, setForm] = useState({
+		email: '',
+		pesan: '',
+	})
+
 	const [count, setCount] = useState(0)
-	const [selectedCard, setSelectedCard] = useState()
-	const obj = {
-		bahasa: {
-			name: 'inggris',
-		},
+	const [email, setEmail] = useState('')
+	const [pesan, setPesan] = useState('')
+
+	const add = () => {
+		//0=>0+1
+		setCount((prev) => (prev += 1))
+		//1=>1+1
+		setCount((prev) => (prev += 1))
+
+		//0+1
+		setCount(count + 1)
+		//0+1
+		setCount(count + 1)
 	}
-	const arr = [
-		'indonesia',
-		'jepang',
-		'inggris',
-		'indonesia',
-		'jepang',
-		'inggris',
-	]
+
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		setIsSubmitted(true)
+		// alert("ini submit")
+	}
+
+	const handleChange = (e) => {
+		const { name, value } = e.target
+
+		setForm((prev) => ({
+			...prev,
+			[name]: value,
+		}))
+	}
+
+	const handleEmail = (e) => {
+		setEmail(e.target.value)
+		setErrorEmail(e.target.value === '')
+	}
+	const handlePesan = (e) => {
+		setPesan(e.target.value)
+	}
+
 	return (
 		<>
-			<h1>Vite + React</h1>
-			<div>
-				{initialState.map((item, index) => (
-					<Card
-						key={index}
-						name={item.name}
-						image={item.image}
-						introduction={item.introduction}
-						// selectCard={setSelectedCard}
-						selectCard={()=>setSelectedCard(item)}
-					/>
-				))}
+			<div className='contact-form' style={{ width: count }}>
+				{isSubmitted ? (
+					<>
+						<div className='contact-submit-message'>Pesan Terkirim</div>
+						<p>Email : {email}</p>
+						<p>Pesan : {pesan}</p>
+					</>
+				) : (
+					<form onSubmit={handleSubmit}>
+						<p>Alamat Email (wajib diisi)</p>
+						<input
+							type='email'
+							name='email'
+							value={form.email}
+							onChange={handleChange}
+						/>
+						<p>Pesan (wajib diisi)</p>
+						<textarea
+							onChange={handleChange}
+							value={form.pesan}
+							name='pesan'
+						></textarea>
+						{/* <input type='email' onChange={handleEmail} value={email} />
+						{errorEmail ? (
+							<p className='contact-message-error'>
+								Masukkan alamat email Anda
+							</p>
+						) : null}
 
-				<p>{JSON.stringify(selectedCard)}</p>
-				{/* {selectedCard ? (
-					<Modal
-						name={selectedCard.name}
-						image={selectedCard.image}
-						introduction={selectedCard.introduction}
-						closeModal={()=>setSelectedCard()}
-					/>
-				) : null} */}
-
-				{/* <Card bahasa={{ name: 'indonesia' }} />
-        
-				<Card {...obj} />
-        <Card bahasa='jepang' /> */}
-
-				{/* {komponenKecil()} */}
-				{/* <ContohButton /> */}
-				{/* <ContohButton/>
-      <ContohButton/>
-      <ContohButton/>
-      <ContohButton/> */}
-				{/* <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button> */}
-				{/* <button className='contoh_class'>count is</button> */}
+						<p>Pesan (wajib diisi)</p>
+						<textarea onChange={handlePesan} value={pesan}></textarea> */}
+						<input type='submit' value='Kirim' />
+					</form>
+				)}
+				{/* <button onClick={add}>{count}</button> */}
 			</div>
 		</>
 	)
